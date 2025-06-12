@@ -12,33 +12,35 @@ document.addEventListener('DOMContentLoaded', () => {
     const progressContainer = document.getElementById('progress-container');
     const progressBar = document.getElementById('progress-bar');
 
+    // Variáveis de estado
     let isPlaying = false;
+    let isFirstPlay = true; // Controla o primeiro clique
 
     // Função para tocar ou pausar a música
     function togglePlay() {
-        if (!isPlaying) {
-            // --- CÓDIGO ALTERADO ---
-            // Define o tempo de início para 3 segundos caso o usuário clique em play
+        // 1. Verifica se é o primeiro clique do usuário
+        if (isFirstPlay) {
             const startTime = 3;
-            // Se a música ainda não começou ou já terminou, inicia em 3s. Senão, apenas continua.
-            if (audioPlayer.currentTime < startTime || audioPlayer.ended) {
-                if (startTime < audioPlayer.duration) {
-                    audioPlayer.currentTime = startTime;
-                }
+            if (startTime < audioPlayer.duration) {
+                audioPlayer.currentTime = startTime;
             }
-            // --- FIM DA ALTERAÇÃO ---
+            isFirstPlay = false; // Após o primeiro clique, esta condição não será mais verdadeira
+        }
 
+        // 2. Inverte o estado de play/pause
+        isPlaying = !isPlaying;
+
+        if (isPlaying) {
             audioPlayer.play();
             playIcon.classList.remove('fa-play');
             playIcon.classList.add('fa-pause');
-            isPlaying = true;
         } else {
             audioPlayer.pause();
             playIcon.classList.remove('fa-pause');
             playIcon.classList.add('fa-play');
-            isPlaying = false;
         }
     }
+
     // Função para formatar o tempo de segundos para MM:SS
     function formatTime(seconds) {
         const minutes = Math.floor(seconds / 60);
@@ -46,12 +48,11 @@ document.addEventListener('DOMContentLoaded', () => {
         return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
     }
 
-    // Função para atualizar a barra de progresso
+    // Função para atualizar a barra de progresso e o tempo
     function updateProgress() {
         const { duration, currentTime } = audioPlayer;
         const progressPercent = (currentTime / duration) * 100;
         progressBar.style.width = `${progressPercent}%`;
-
         currentTimeEl.textContent = formatTime(currentTime);
     }
 
@@ -61,6 +62,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const clickX = event.offsetX;
         const duration = audioPlayer.duration;
         audioPlayer.currentTime = (clickX / width) * duration;
+        
+        // Se o usuário clicar na barra, consideramos que não é mais o "primeiro play"
+        isFirstPlay = false; 
     }
 
     // Event Listeners
@@ -68,34 +72,17 @@ document.addEventListener('DOMContentLoaded', () => {
     audioPlayer.addEventListener('timeupdate', updateProgress);
     progressContainer.addEventListener('click', setProgress);
 
-    // Atualiza a duração e inicia a música automaticamente
+    // Apenas atualiza a duração total quando os metadados do áudio carregam
     audioPlayer.addEventListener('loadedmetadata', () => {
-        // Bloco original: atualiza a duração total
         if (audioPlayer.duration && !isNaN(audioPlayer.duration)) {
             totalDurationEl.textContent = formatTime(audioPlayer.duration);
         }
-
-        // --- CÓDIGO ALTERADO E ADICIONADO ---
-        // Define o tempo de início em segundos
-        const startTime = 3; // Alterado para 3 segundos
-
-        // Verifica se o tempo de início é válido
-        if (startTime < audioPlayer.duration) {
-            // Define o tempo atual da música para 3 segundos
-            audioPlayer.currentTime = startTime;
-
-            // Toca a música automaticamente e atualiza o estado
-            audioPlayer.play();
-            playIcon.classList.remove('fa-play');
-            playIcon.classList.add('fa-pause');
-            isPlaying = true;
-        }
-        // --- FIM DO CÓDIGO ALTERADO E ADICIONADO ---
     });
 
-    // Quando a música terminar, reseta o ícone
+    // Quando a música terminar, reseta o player para o estado inicial
     audioPlayer.addEventListener('ended', () => {
         isPlaying = false;
+        isFirstPlay = true; // Permite que, ao tocar de novo, a música comece em 3s
         playIcon.classList.remove('fa-pause');
         playIcon.classList.add('fa-play');
         progressBar.style.width = '0%';
