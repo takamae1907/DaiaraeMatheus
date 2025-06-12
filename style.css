@@ -1,0 +1,151 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+body {
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+    background-color: #1e1e2f;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.main-container {
+    width: 375px;
+    background-color: #6a32b5;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* --- Music Player --- */
+.music-player {
+    background-color: #1e1e2f;
+    color: white;
+    padding: 20px 25px;
+    position: relative;
+}
+
+.song-details {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.song-icon {
+    width: 45px;
+    height: 45px;
+    background-color: #7b4cbf;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    margin-right: 15px;
+}
+
+.song-title {
+    font-size: 16px;
+    font-weight: 500;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+}
+
+.artist-name {
+    font-size: 14px;
+    color: #a0a0b0;
+    margin: 2px 0 0;
+}
+
+.progress-bar-container {
+    background-color: #4a4a5a;
+    height: 6px;
+    border-radius: 3px;
+    margin-bottom: 5px;
+    cursor: pointer;
+}
+
+.progress-bar {
+    width: 0%; 
+    height: 100%;
+    background-color: #1db954;
+    border-radius: 3px;
+    transition: width 0.1s linear;
+}
+
+.time-stamps {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: #a0a0b0;
+    margin-bottom: 15px; /* Aumentei o espaço para compensar o botão removido */
+}
+
+.controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.control-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    margin: 0 20px;
+}
+
+.play-btn {
+    width: 50px;
+    height: 50px;
+    background-color: white;
+    color: #1e1e2f;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 22px;
+}
+
+/* --- Content Card --- */
+.content-card {
+    background-color: white;
+    padding: 20px;
+    border-radius: 20px 20px 0 0;
+    transform: translateY(-10px);
+}
+
+/* No seu arquivo style.css */
+
+.image-container {
+    width: 100%;
+    height: 630px; /* Você pode ajustar a altura se quiser */
+    border-radius: 12px;
+    overflow: hidden; 
+    margin-bottom: 20px;
+    background-color: #f0f0f0;
+}
+
+.image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* <-- ESTA É A LINHA MAIS IMPORTANTE */
+}
+
+.static-text-container {
+    padding: 15px;
+    background-color: #f8f9fa;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+}
+
+.static-text-container p {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #333;
+}

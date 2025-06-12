@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OI</title>
+    <style>
+        /* CSS para o setup inicial e fundo */
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            background-color: #1a1a2e;
+            /* Fundo azul bem escuro */
+            overflow: hidden;
+            /* Esconde os corações que saem da tela */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Container principal para centralizar o botão */
+        .main-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            position: relative;
+            /* Necessário para o z-index funcionar */
+            z-index: 10;
+        }
+
+        /* Estilo do botão */
+        .magic-button {
+            padding: 15px 35px;
+            font-size: 1.2rem;
+            color: white;
+            background: linear-gradient(45deg, #e94e77, #bc1a6e);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .magic-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(233, 78, 119, 0.4);
+        }
+
+        /* Estilo base para cada coração */
+        .heart {
+            position: absolute;
+            bottom: -10vh;
+            /* Começa fora da tela, na parte de baixo */
+            opacity: 0;
+            animation: fly 10s linear infinite;
+            /* Animação principal */
+
+            /* CORREÇÃO 1: Adiciona o corpo do coração */
+            background-color: #e94e77;
+        }
+
+        /* A "mágica" para criar o formato de coração com CSS */
+        .heart::before,
+        .heart::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: #e94e77;
+            border-radius: 50%;
+        }
+
+        .heart::before {
+            top: -50%;
+            left: 0;
+        }
+
+        .heart::after {
+            top: 0;
+            left: 50%;
+        }
+
+        /* Define a animação de voo dos corações */
+        @keyframes fly {
+            0% {
+                /* CORREÇÃO 2: Ajusta a rotação para -45 graus */
+                transform: translateY(0) rotate(-45deg);
+                opacity: 1;
+            }
+
+            100% {
+                /* Sobe até sair da tela e gira um pouco */
+                transform: translateY(-110vh) rotate(-135deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="main-container">
+        <button class="magic-button" onclick="window.location.href='principal.html'">Clique aqui</button>
+    </div>
+
+    <script>
+        // JavaScript para criar os corações de forma dinâmica
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+
+            // Define um tamanho aleatório para o coração
+            const size = Math.random() * 30 + 10; // Tamanho entre 10px e 40px
+            heart.style.width = `${size}px`;
+            heart.style.height = `${size}px`;
+
+            // Define uma posição horizontal aleatória
+            heart.style.left = `${Math.random() * 100}%`;
+
+            // Define uma duração e um delay aleatórios para a animação
+            // Isso faz com que os corações se movam em velocidades diferentes
+            const duration = Math.random() * 5 + 5 ; // Duração entre 5s e 10s
+            const delay = Math.random() * 0; // Delay de até 5s
+
+            heart.style.animationDuration = `${duration}s`;
+            heart.style.animationDelay = `${delay}s`;
+
+            // Adiciona um filtro de blur aleatório para dar profundidade
+            heart.style.filter = `blur(${Math.random() * 2}px)`;
+
+            // Adiciona o coração ao body do documento
+            document.body.appendChild(heart);
+
+            // Remove o coração do HTML depois que a animação terminar
+            // para não sobrecarregar a página
+            setTimeout(() => {
+                heart.remove();
+            }, (duration + delay) * 1000);
+        }
+
+        // Cria um novo coração a cada 300 milissegundos
+        setInterval(createHeart, 300);
+
+    </script>
+</body>
+
+</html>
